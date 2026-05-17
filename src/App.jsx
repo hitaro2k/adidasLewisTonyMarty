@@ -12,8 +12,6 @@ import {
   Zap,
 } from "lucide-react";
 
-const videoSrc = "/ADIFINAL.mp4";
-
 const personas = [
   {
     id: "tony",
@@ -70,6 +68,39 @@ const personas = [
     icons: [Target, Sparkles, Flame],
   },
 ];
+
+const posterProfiles = {
+  tony: {
+    kicker: "Tony Montana",
+    title: "Ambition suit",
+    tag: "Miami pressure. Gold speed.",
+    number: "F50",
+    photo: "/characters/tony-montana-white-suit.jpg",
+    photoAlt: "Al Pacino portrait used as Tony Montana inspired campaign art",
+    photoPosition: "50% 28%",
+    photoScale: "scale(1.08)",
+  },
+  lewis: {
+    kicker: "Lewis Hamilton",
+    title: "Race control",
+    tag: "Measured speed. Red pressure.",
+    number: "LH",
+    photo: "/characters/lewis-hamilton-ferrari.webp",
+    photoAlt: "Lewis Hamilton portrait used as adidas pressure campaign art",
+    photoPosition: "50% 18%",
+    photoScale: "scale(1.02)",
+  },
+  marty: {
+    kicker: "Marty Supreme",
+    title: "Obsessive rally",
+    tag: "Table-light focus. Orange strike.",
+    number: "MS",
+    photo: "/characters/marty-candidates/marthy-5.jpg",
+    photoAlt: "Timothee Chalamet portrait used as Marty Supreme inspired campaign art",
+    photoPosition: "54% 33%",
+    photoScale: "scale(1.34)",
+  },
+};
 
 const pricingTests = [
   { id: "tony", expected: 260 },
@@ -156,6 +187,72 @@ function BootProductImage({ persona, compact = false }) {
       <div className="absolute left-8 top-8 z-30 rounded-2xl border border-white/10 bg-black/55 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-white shadow-2xl backdrop-blur-xl">
         {persona.boot}
       </div>
+    </motion.div>
+  );
+}
+
+function CharacterPoster({ persona }) {
+  const profile = posterProfiles[persona.id] || posterProfiles.tony;
+
+  return (
+    <motion.div
+      key={persona.id}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.55, type: "spring", stiffness: 90, damping: 18 }}
+      className="relative aspect-[9/16] overflow-hidden rounded-[2rem] bg-black"
+      style={{
+        background: `radial-gradient(circle at 50% 21%, ${persona.accent}30, transparent 28%), radial-gradient(circle at 50% 72%, ${persona.accent2}38, transparent 34%), linear-gradient(160deg, #050505 0%, #111 54%, #050505 100%)`,
+      }}
+    >
+      <img
+        src={profile.photo}
+        alt={profile.photoAlt}
+        className="absolute inset-0 h-full w-full object-cover grayscale"
+        style={{
+          objectPosition: profile.photoPosition,
+          transform: profile.photoScale,
+          filter: "grayscale(0.08) contrast(1.05) brightness(1.08) saturate(1.02)",
+        }}
+      />
+      <div className="absolute inset-0 mix-blend-screen opacity-24" style={{ background: `linear-gradient(145deg, transparent 0%, ${persona.accent}34 42%, ${persona.accent2}24 100%)` }} />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,transparent_0%,rgba(0,0,0,0.02)_38%,rgba(0,0,0,0.32)_100%)]" />
+      <div className="absolute inset-0 opacity-[0.055] bg-[linear-gradient(90deg,#fff_0_1px,transparent_1px),linear-gradient(180deg,#fff_0_1px,transparent_1px)] bg-[length:42px_42px]" />
+      <div className="absolute inset-x-0 top-0 z-10 h-[34%] bg-gradient-to-b from-black/78 via-black/32 to-transparent" />
+      <div className="absolute -left-32 top-20 h-[120%] w-24 rotate-[16deg] bg-white/70 mix-blend-overlay" />
+      <div className="absolute -left-14 top-10 h-[118%] w-14 rotate-[16deg] opacity-70 mix-blend-screen" style={{ backgroundColor: persona.accent }} />
+      <div className="absolute right-7 top-9 z-20 flex gap-2">
+        {[0, 1, 2].map((bar) => (
+          <div key={bar} className="h-16 w-3 skew-x-[-18deg] rounded-full bg-white/90" />
+        ))}
+      </div>
+
+      <div className="absolute left-7 top-8 z-20 -m-3 rounded-2xl bg-black/28 p-3 drop-shadow-[0_10px_24px_rgba(0,0,0,0.70)] backdrop-blur-[2px]">
+        <div className="text-xs font-black uppercase tracking-[0.24em] text-white/70">{profile.kicker}</div>
+        <div className="mt-2 max-w-[11rem] text-4xl font-black uppercase leading-[0.88] tracking-[-0.05em] text-white">
+          {profile.title}
+        </div>
+      </div>
+
+      <div className="absolute right-7 top-32 z-20 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-white/70 backdrop-blur-xl">
+        {profile.number}
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 z-30 h-[42%] bg-gradient-to-t from-black via-black/62 to-transparent" />
+      <img
+        src={persona.image}
+        alt={persona.imageAlt}
+        className="absolute bottom-16 left-1/2 z-40 h-[23%] w-[82%] -translate-x-1/2 object-contain"
+        style={{ filter: "drop-shadow(0 24px 32px rgba(0,0,0,0.76)) saturate(1.08)" }}
+      />
+      <div className="absolute inset-x-7 bottom-6 z-50 flex items-end justify-between gap-4">
+        <div>
+          <div className="text-[10px] font-black uppercase tracking-[0.24em] text-white/42">Selected icon</div>
+          <div className="mt-1 text-lg font-black text-white">{persona.archetype}</div>
+        </div>
+        <div className="max-w-[9rem] text-right text-xs font-bold leading-5 text-white/52">{profile.tag}</div>
+      </div>
+      <div className="pointer-events-none absolute inset-0 rounded-[2rem] ring-1 ring-white/10" />
     </motion.div>
   );
 }
@@ -269,13 +366,10 @@ export default function AdidasThreeIconsLanding() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.14, duration: 0.85 }} className="relative">
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.14, duration: 0.85 }} className="relative hidden md:block">
             <div className="absolute -inset-8 rounded-[3rem] blur-3xl" style={{ backgroundColor: active.accent + "33" }} />
             <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.055] p-3 shadow-[0_50px_140px_rgba(0,0,0,0.62)] backdrop-blur-xl">
-              <div className="aspect-[9/16] overflow-hidden rounded-[2rem] bg-black">
-                <video className="h-full w-full object-cover" src={videoSrc} autoPlay muted loop playsInline />
-                <div className="pointer-events-none absolute inset-3 rounded-[2rem] ring-1 ring-white/10" />
-              </div>
+              <CharacterPoster persona={active} />
             </div>
           </motion.div>
         </div>
